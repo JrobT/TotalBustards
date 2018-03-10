@@ -17,6 +17,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String startStop, finalStop;
     private double[] coordStart, coordStop;
 
+    private ClientConThread communicator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +33,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        communicator = new ClientConThread(mMap);
+        communicator.start();
     }
 
 
@@ -46,6 +51,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        communicator.sendMessage(startStop);
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
