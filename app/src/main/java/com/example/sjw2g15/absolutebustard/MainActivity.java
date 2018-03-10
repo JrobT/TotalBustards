@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                     String[] stops = {start.getSelectedItem().toString(),
                             stop.getSelectedItem().toString()};
-                    intent.putExtra("stop_array", stops);
+                    intent.putExtra("start", stops[0]);
+                    intent.putExtra("stop", stops[1]);
                     startActivity(intent);
                     // TODO: Test if this gray screens on different machines
                 } else {

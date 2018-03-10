@@ -1,5 +1,6 @@
 package com.example.sjw2g15.absolutebustard;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -13,11 +14,19 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private String startStop, finalStop;
+    private double[] coordStart, coordStop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        Intent getI = getIntent();
+        startStop = getI.getStringExtra("start");
+        finalStop = getI.getStringExtra("stop");
+        coordStart = null;
+        coordStop = null;
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
