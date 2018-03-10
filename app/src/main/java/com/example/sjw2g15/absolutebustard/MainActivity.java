@@ -4,23 +4,59 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.CheckBox;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    private Spinner start, stop;
+    private View list;
+    private View go;
+    private CheckBox location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button btn = (Button)findViewById(R.id.open_activity_button);
+        start = findViewById(R.id.start);
+        stop = findViewById(R.id.stop);
+        location = findViewById(R.id.useLocation);
+        list = findViewById(R.id.listView);
+        go = findViewById(R.id.go);
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        start.setOnItemSelectedListener( new BusStopListener(start, stop, list, go) );
+        stop.setOnItemSelectedListener( new BusStopListener(start, stop, list, go)  );
+        go.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, MapsActivity.class));
+                if (start.getSelectedItem() != null ||
+                        stop.getSelectedItem() != null) {  // TODO: Change to 'if the list' is filled
+                    Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                    String[] stops = {start.getSelectedItem().toString(),
+                            stop.getSelectedItem().toString()};
+                    intent.putExtra("stop_array", stops);
+                    startActivity(intent);
+                    // TODO: Test if this gray screens on different machines
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "Please select a starting and final stop with a bus route",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
+        location.setSelected(false);
+        list.setVisibility(View.GONE);
+        go.setVisibility(View.GONE);
+    }
+
+    protected void onLocate(View v) {
+        if (v.isSelected()) {
+            // TODO: Get location and compare to bus stop locations for the nearest bus stop
+        }
     }
 
 }

@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="UnilinkBlue">#5dbcd2</color>
+    <color name="AppBlack">#000000</color>
+    <color name="Default">#cfd8dc</color>
 </resources>
