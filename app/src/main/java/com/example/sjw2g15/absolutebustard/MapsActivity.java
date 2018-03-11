@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mycompany.app.LocXY;
+import com.mycompany.app.PathRequestMsg;
 import com.mycompany.app.UpdateUserLocMsg;
 
 import java.io.IOException;
@@ -165,8 +166,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         communicator.setMap(mMap);
         System.out.println("the reaalz;" + mMap);
-        communicator.sendMessage(startStop);
-
+        communicator.sendMessage(new PathRequestMsg(startStop, finalStop));
 
         LocationManager locationManager = (LocationManager)
                 getSystemService(Context.LOCATION_SERVICE);
