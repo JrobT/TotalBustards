@@ -25,6 +25,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.mycompany.app.LocXY;
 import com.mycompany.app.UpdateUserLocMsg;
 
 import java.io.IOException;
@@ -115,7 +116,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 "Location changed: Lat: " + loc.latitude + " Lng: "
                         + loc.longitude, Toast.LENGTH_SHORT).show();
 
-        UpdateUserLocMsg m = new UpdateUserLocMsg(loc, myId);
+        UpdateUserLocMsg m = new UpdateUserLocMsg(new LocXY(loc.latitude, loc.longitude), myId);
         communicator.sendMessage(m);
 
 //        caller.runOnUiThread(new Runnable(){

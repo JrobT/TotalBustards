@@ -9,15 +9,15 @@ import java.io.Serializable;
  */
 
 public class UpdateUserLocMsg implements Serializable {
-    private LatLng loc;
+    private LocXY loc;
     private String user;
 
-    public UpdateUserLocMsg(LatLng loc, String id){
+    public UpdateUserLocMsg(LocXY loc, String id){
         this.loc = loc;
         this.user = id;
     }
 
-    public LatLng getLoc(){
+    public LocXY getLoc(){
         return loc;
     }
 

@@ -8,7 +8,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mycompany.app.BusStopUpdate;
 import com.mycompany.app.ConfirmMsg;
-import com.mycompany.app.Location;
+import com.mycompany.app.LocXY;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -92,7 +92,7 @@ public class ClientConThread extends Thread {
                     if (!(serverMsg instanceof ConfirmMsg)) {
                         System.out.println(serverMsg);
 
-                        latlng_ext = new LatLng(((Location)serverMsg).lat, ((Location)serverMsg).lon);
+                        latlng_ext = new LatLng(((LocXY)serverMsg).lat, ((LocXY)serverMsg).lon);
 
                         System.out.println(latlng_ext);
                         System.out.println(mMap);
