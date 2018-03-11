@@ -4,10 +4,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
+/**
+ * Listener for selection of starting bus stop and final bus stop fields in ui
+ */
 public class BusStopListener implements AdapterView.OnItemSelectedListener {
 
-    private Spinner start, stop;
-    private View list;
+    private Spinner start, stop;    // selection fields
+    private View list;  // list of bus routes that run between the two selected stops
     private View go;
 
     public BusStopListener(Spinner start, Spinner stop, View list, View go) {
@@ -27,8 +30,8 @@ public class BusStopListener implements AdapterView.OnItemSelectedListener {
             go.setVisibility(View.GONE);
         }
 
-        // TODO: Get buses that stop here
-        // TODO: Put the buses in the list
+        // TODO: Get bus routes
+        // TODO: Put the bus routes in the list
     }
 
     @Override

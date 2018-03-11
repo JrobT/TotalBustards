@@ -35,7 +35,7 @@ import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    public TextView busStopLabel;
+    private TextView busStopLabel;
 
     private GoogleMap mMap;
     private String startStop, finalStop;
@@ -119,31 +119,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         UpdateUserLocMsg m = new UpdateUserLocMsg(new LocXY(loc.latitude, loc.longitude), myId);
         communicator.sendMessage(m);
-
 //        caller.runOnUiThread(new Runnable(){
 //            public void run(){
-                userMarker.setPosition(new LatLng(debugCoords[0], debugCoords[1]));
-
+        userMarker.setPosition(new LatLng(debugCoords[0], debugCoords[1]));
 //            }
 //        });
     }
 
-    /*---------- Listener class to get coordinates ------------- */
+    /**
+     * Listener class to get coordinates
+     */
     private class MyLocationListener implements LocationListener {
-
         @Override
         public void onLocationChanged(Location loc) {
             updateUserPos(new LatLng(loc.getLatitude(), loc.getLongitude()));
         }
-
         @Override
         public void onProviderDisabled(String provider) {
         }
-
         @Override
         public void onProviderEnabled(String provider) {
         }
-
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
@@ -152,8 +148,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
+     * This is where we can add markers or lines, add listeners or move the camera.
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
@@ -165,45 +160,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .title("Me").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
         communicator.setMap(mMap);
-        System.out.println("the reaalz;" + mMap);
         communicator.sendMessage(new PathRequestMsg(startStop, finalStop));
 
         LocationManager locationManager = (LocationManager)
                 getSystemService(Context.LOCATION_SERVICE);
-
         LocationListener locationListener = new MyLocationListener();
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+            // TODO: Consider calling request permissions
             return;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
-
-//        LocationManager mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-//
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//            System.out.println("no permissions");
-//
-//            return;
-//        }
-//        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500,
-//                0.5f, mLocationListener);
-
-        // Add a marker in Sydney and move the camera
-        //LatLng sydney = new LatLng(-34, 151);
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }

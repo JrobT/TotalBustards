@@ -12,9 +12,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 /**
- * Created by User on 10/03/2018.
+ *
  */
-
 public class TClickListener implements View.OnClickListener {
     final EditText msg;
     Button send;
@@ -33,16 +32,8 @@ public class TClickListener implements View.OnClickListener {
 
     public void onClick(View v) {
         String message = msg.getText().toString();
-
         status.setText("...");
-        PrintWriter outp = null;
-        BufferedReader inp = null;
-        //status.setText("Established connection..");
-        String serverMsg = null;
 
         t.sendMessage(message);
-
-        //else
-        //    status.setText("Problem in connection..!");
     }
 }

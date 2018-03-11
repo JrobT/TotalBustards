@@ -19,19 +19,14 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
- * Created by User on 10/03/2018.
+ * Communication thread between client and server
  */
-
 public class ClientConThread extends Thread {
 
     private GoogleMap mMap;
-
     public volatile Object message;
-
     public Socket s;
-
     private MapsActivity caller;
-
     private LatLng latlng_ext;
 
     public ClientConThread(MapsActivity caller){
@@ -69,25 +64,22 @@ public class ClientConThread extends Thread {
         try {
             outp = new PrintWriter(s.getOutputStream(), true);
             inp = new ObjectInputStream(s.getInputStream());
-            //serverMsg = inp.readLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            // TODO: Handle exception
         }
-        //convo.append(serverMsg + "\n");
 
         if (message != null) {
             if (message.toString().trim() == "QUIT") {
                 try {
                     s.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    // TODO: Handle exception
                 }
-                //status.setText("Disconnected from server.");
 
             } else {
                 try {
-
-                    //convo.append(message + "\n");
                     outp.println(message);
                     final Object serverMsg = inp.readObject();
 
@@ -107,7 +99,6 @@ public class ClientConThread extends Thread {
                                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng_ext, 12.0f));
                             }
                         });
-
                     } else if (serverMsg instanceof BusStopUpdate) {
                         caller.runOnUiThread(new Runnable(){
                             public void run(){
@@ -125,11 +116,12 @@ public class ClientConThread extends Thread {
                             }
                         });
                     }
-                    //convo.append(serverMsg + "\n");
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    // TODO: Handle exception
                 } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    // TODO: Handle exception
                 }
             }
 

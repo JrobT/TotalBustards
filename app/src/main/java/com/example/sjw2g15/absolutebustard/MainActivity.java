@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -28,8 +27,6 @@ public class MainActivity extends AppCompatActivity {
         // get IMEI Permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, 0);
-//            initUserID();
-//            return;
         }
 
         return tm.getDeviceId();
@@ -40,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final String myId = initUserID();
+
         start = findViewById(R.id.start);
         stop = findViewById(R.id.stop);
         location = findViewById(R.id.useLocation);
@@ -49,13 +48,11 @@ public class MainActivity extends AppCompatActivity {
         start.setOnItemSelectedListener( new BusStopListener(start, stop, list, go) );
         stop.setOnItemSelectedListener( new BusStopListener(start, stop, list, go)  );
 
-        final String myId = initUserID();
-
         go.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (start.getSelectedItem() != null ||
-                        stop.getSelectedItem() != null) {  // TODO: Change to 'if the list' is filled
+                        stop.getSelectedItem() != null) {  // TODO: Change to 'if the list is filled'
                     Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                     String[] stops = {start.getSelectedItem().toString(),
                             stop.getSelectedItem().toString()};
@@ -80,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onLocate(View v) {
         if (v.isSelected()) {
             // TODO: Get location and compare to bus stop locations for the nearest bus stop
+            // TODO: Search for and select that bus stop name, and put it in start field
+            // TODO: Disable editing of start field
         }
     }
 
