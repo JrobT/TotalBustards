@@ -3,15 +3,17 @@ package com.mycompany.app;
 import java.io.Serializable;
 
 /**
- * Created by User on 10/03/2018.
+ * LatLon coordinates object
  */
-
 public class LocXY implements Serializable {
-    public double lat;
-    public double lon;
+    private double lat;
+    private double lon;
 
     public LocXY(double lat, double lon){
         this.lat = lat;
         this.lon = lon;
     }
+
+    public double getLat() { return lat; }
+    public double getLon() { return lon; }
 }

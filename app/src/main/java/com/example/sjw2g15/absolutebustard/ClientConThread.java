@@ -7,6 +7,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.mycompany.app.BusStop;
 import com.mycompany.app.BusStopUpdate;
 import com.mycompany.app.ConfirmMsg;
 import com.mycompany.app.LocXY;
@@ -14,6 +15,7 @@ import com.mycompany.app.PathMsg;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -32,9 +34,7 @@ public class ClientConThread extends Thread {
     public ClientConThread(MapsActivity caller){
         this.caller = caller;
     }
-    public void sendMessage(Object m){
-        message = m;
-    }
+    public void sendMessage(Object m){ message = m; }
     public void setMap(GoogleMap mMap){ this.mMap = mMap;}
 
     @Override
@@ -44,8 +44,9 @@ public class ClientConThread extends Thread {
         try {
             s = new Socket("10.9.164.102", 8080);
 
-            while(true){
-                if (message!=null){
+            while(true) {
+                System.out.println("THIS MESSAGE HERE" + message);
+                if (message!=null) {
                     communicateServerSend();
                 }
             }
@@ -56,19 +57,20 @@ public class ClientConThread extends Thread {
 
     }
 
-    public void communicateServerSend(){
+    public void communicateServerSend() {
 
-        PrintWriter outp = null;
+        ObjectOutputStream outp = null;
         ObjectInputStream inp = null;
 
         try {
-            outp = new PrintWriter(s.getOutputStream(), true);
+            outp = new ObjectOutputStream(s.getOutputStream());
             inp = new ObjectInputStream(s.getInputStream());
         } catch (IOException e) {
             //e.printStackTrace();
             // TODO: Handle exception
         }
 
+        System.out.println("THIS MESSAGE HERE");
         if (message != null) {
             if (message.toString().trim() == "QUIT") {
                 try {
@@ -80,14 +82,15 @@ public class ClientConThread extends Thread {
 
             } else {
                 try {
-                    outp.println(message);
+                    System.out.println("THIS MESSAGE HERE " + message);
+                    outp.writeObject(message);
                     final Object serverMsg = inp.readObject();
 
                     // Determine how to respond to the message
                     if (!(serverMsg instanceof ConfirmMsg)) {
                         System.out.println(serverMsg);
 
-                        latlng_ext = new LatLng(((LocXY)serverMsg).lat, ((LocXY)serverMsg).lon);
+                        latlng_ext = new LatLng(((LocXY)serverMsg).getLat(), ((LocXY)serverMsg).getLon());
 
                         System.out.println(latlng_ext);
                         System.out.println(mMap);
@@ -107,11 +110,13 @@ public class ClientConThread extends Thread {
                         });
                     } else if (serverMsg instanceof PathMsg) {
                         caller.runOnUiThread(new Runnable(){
-                            public void run(){
-                                for (int i=0; i<((PathMsg) serverMsg).getLocations().size(); i++) {
-                                    LatLng pos = new LatLng(((PathMsg) serverMsg).getLocations().get(i).lat,
-                                            (((PathMsg) serverMsg).getLocations().get(i)).lon);
-                                    mMap.addMarker(new MarkerOptions().position(pos));
+                            public void run() {
+                                for (BusStop busStop : ((PathMsg) serverMsg).getLocations()) {
+                                    LatLng pos = new LatLng(busStop.getLoc().getLat(),
+                                            busStop.getLoc().getLat());
+                                    MarkerOptions markerOp = new MarkerOptions().position(pos);
+                                    markerOp.title(busStop.getName());
+                                    mMap.addMarker(markerOp);
                                 }
                             }
                         });

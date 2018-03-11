@@ -35,7 +35,7 @@ import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private TextView busStopLabel;
+    protected TextView busStopLabel;
 
     private GoogleMap mMap;
     private String startStop, finalStop;
