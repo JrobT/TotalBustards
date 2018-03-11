@@ -5,15 +5,27 @@
     <string name="stop_prompt">Final Stop</string>
 
     <string-array name="start_arrays">
-        <item>Interchange</item>
-        <item>Highfield</item>
-        <item>Some Bus Stop</item>
+        <item>Southampton Airport</item>
+        <item>Southampton Uni Interchange</item>
+        <item>Portswood Broadway</item>
+        <item>Archers Road</item>
+        <item>Civic Centre</item>
+        <item>Southampton Central Rail Station</item>
+        <item>West Quay Coach Stop</item>
+        <item>Southampton Town Quay</item>
+        <item>National Oceanography Centre</item>
     </string-array>
 
     <string-array name="stop_arrays">
-        <item>Interchange</item>
-        <item>Highfield</item>
-        <item>Some Bus Stop</item>
+        <item>Southampton Airport</item>
+        <item>Southampton Uni Interchange</item>
+        <item>Portswood Broadway</item>
+        <item>Archers Road</item>
+        <item>Civic Centre</item>
+        <item>Southampton Central Rail Station</item>
+        <item>West Quay Coach Stop</item>
+        <item>Southampton Town Quay</item>
+        <item>National Oceanography Centre</item>
     </string-array>
 
 </resources>

@@ -1,8 +1,13 @@
 package com.example.sjw2g15.absolutebustard;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -15,6 +20,20 @@ public class MainActivity extends AppCompatActivity {
     private View list;
     private View go;
     private CheckBox location;
+
+    public String initUserID() {
+
+        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+
+        // get IMEI Permission
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, 0);
+//            initUserID();
+//            return;
+        }
+
+        return tm.getDeviceId();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
         start.setOnItemSelectedListener( new BusStopListener(start, stop, list, go) );
         stop.setOnItemSelectedListener( new BusStopListener(start, stop, list, go)  );
+
+        final String myId = initUserID();
+
         go.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                             stop.getSelectedItem().toString()};
                     intent.putExtra("start", stops[0]);
                     intent.putExtra("stop", stops[1]);
+                    intent.putExtra("myId", myId);
 
                     startActivity(intent);
                     // TODO: Test if this gray screens on different machines

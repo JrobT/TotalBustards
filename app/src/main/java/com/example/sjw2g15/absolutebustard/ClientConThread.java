@@ -1,13 +1,16 @@
 package com.example.sjw2g15.absolutebustard;
 
+import android.app.Activity;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.mycompany.app.ConfirmMsg;
+import com.mycompany.app.Location;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
@@ -23,13 +26,17 @@ public class ClientConThread extends Thread {
 
     public Socket s;
 
-    public ClientConThread(GoogleMap mMap){
-        this.mMap = mMap;
-    }
+    private Activity caller;
 
+    private LatLng latlng_ext;
+
+    public ClientConThread(Activity caller){
+        this.caller = caller;
+    }
     public void sendMessage(Object m){
         message = m;
     }
+    public void setMap(GoogleMap mMap){ this.mMap = mMap;}
 
     @Override
     public void run() {
@@ -53,12 +60,12 @@ public class ClientConThread extends Thread {
     public void communicateServerSend(){
 
         PrintWriter outp = null;
-        BufferedReader inp = null;
+        ObjectInputStream inp = null;
         Object serverMsg = null;
 
         try {
             outp = new PrintWriter(s.getOutputStream(), true);
-            inp = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            inp = new ObjectInputStream(s.getInputStream());
             //serverMsg = inp.readLine();
         } catch (IOException e) {
             e.printStackTrace();
@@ -79,16 +86,30 @@ public class ClientConThread extends Thread {
 
                     //convo.append(message + "\n");
                     outp.println(message);
-                    serverMsg = inp.readLine();
+                    serverMsg = inp.readObject();
 
-                    LatLng pos = new LatLng(((Location)serverMsg).lat, ((Location)serverMsg).lon);
-                    mMap.addMarker(new MarkerOptions().position(pos).title(message.toString()));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(pos));
+                    // Determine how to respond to the message
+                    if (!(serverMsg instanceof ConfirmMsg)) {
+                        System.out.println(serverMsg);
 
 
-                    System.out.println(serverMsg);
+                        latlng_ext = new LatLng(((Location)serverMsg).lat, ((Location)serverMsg).lon);
+
+                        System.out.println(latlng_ext);
+                        System.out.println(mMap);
+
+                        caller.runOnUiThread(new Runnable(){
+                            public void run(){
+                                mMap.addMarker(new MarkerOptions().position(latlng_ext));
+                                mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng_ext));
+                            }
+                        });
+
+                    }
                     //convo.append(serverMsg + "\n");
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
             }

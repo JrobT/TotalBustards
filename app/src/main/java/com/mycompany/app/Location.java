@@ -1,4 +1,4 @@
-package com.example.sjw2g15.absolutebustard;
+package com.mycompany.app;
 
 import java.io.Serializable;
 
