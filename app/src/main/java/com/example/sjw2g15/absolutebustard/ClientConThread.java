@@ -1,6 +1,15 @@
 package com.example.sjw2g15.absolutebustard;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -11,6 +20,7 @@ import com.mycompany.app.BusStop;
 import com.mycompany.app.BusStopUpdate;
 import com.mycompany.app.ConfirmMsg;
 import com.mycompany.app.LocXY;
+import com.mycompany.app.NotifMsg;
 import com.mycompany.app.PathMsg;
 
 import java.io.IOException;
@@ -109,7 +119,7 @@ public class ClientConThread extends Thread {
                             }
                         });
                     } else if (serverMsg instanceof PathMsg) {
-                        caller.runOnUiThread(new Runnable(){
+                        caller.runOnUiThread(new Runnable() {
                             public void run() {
                                 for (BusStop busStop : ((PathMsg) serverMsg).getLocations()) {
                                     LatLng pos = new LatLng(busStop.getLoc().getLat(),
@@ -120,6 +130,17 @@ public class ClientConThread extends Thread {
                                 }
                             }
                         });
+                    } else if (serverMsg instanceof NotifMsg) {
+                        Notification mBuilder = new NotificationCompat.Builder(caller)
+                                .setSmallIcon(R.drawable.bus)
+                                .setContentTitle("TotalBustards")
+                                .setContentText("Did you get off the bus?")
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                .setAutoCancel(true)
+                                .build();
+
+                        NotificationManager mNotificationManager = (NotificationManager) caller.getSystemService(Context.NOTIFICATION_SERVICE);
+                        mNotificationManager.notify(001, mBuilder);
                     }
                 } catch (IOException e) {
                     //e.printStackTrace();
