@@ -101,7 +101,8 @@ public class ClientConThread extends Thread {
                         caller.runOnUiThread(new Runnable(){
                             public void run(){
                                 mMap.addMarker(new MarkerOptions().position(latlng_ext));
-                                mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng_ext));
+                                //mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng_ext));
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng_ext, 12.0f));
                             }
                         });
 
