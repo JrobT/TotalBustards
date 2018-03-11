@@ -115,7 +115,7 @@ public class ClientConThread extends Thread {
                                     LatLng pos = new LatLng(busStop.getLoc().getLat(),
                                             busStop.getLoc().getLat());
                                     MarkerOptions markerOp = new MarkerOptions().position(pos);
-                                    markerOp.title(busStop.getName());
+                                    markerOp = markerOp.title(busStop.getName());
                                     mMap.addMarker(markerOp);
                                 }
                             }
