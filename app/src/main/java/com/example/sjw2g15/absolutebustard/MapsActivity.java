@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,6 +32,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+
+    public TextView busStopLabel;
 
     private GoogleMap mMap;
     private String startStop, finalStop;
@@ -56,6 +59,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         coordStart = null;
         coordStop = null;
+
+        busStopLabel = findViewById(R.id.closest_to);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);

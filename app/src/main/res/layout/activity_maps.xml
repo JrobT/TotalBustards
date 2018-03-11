@@ -4,6 +4,19 @@
     android:background="@color/UnilinkBlue"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/closest_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:fontFamily="Helvetica"
+        android:text="Closest to:"
+        android:textAlignment="center"
+        android:textColor="@color/AppBlack"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/map"

@@ -6,6 +6,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.mycompany.app.BusStopUpdate;
 import com.mycompany.app.ConfirmMsg;
 import com.mycompany.app.Location;
 
@@ -26,11 +27,11 @@ public class ClientConThread extends Thread {
 
     public Socket s;
 
-    private Activity caller;
+    private MapsActivity caller;
 
     private LatLng latlng_ext;
 
-    public ClientConThread(Activity caller){
+    public ClientConThread(MapsActivity caller){
         this.caller = caller;
     }
     public void sendMessage(Object m){
@@ -61,7 +62,6 @@ public class ClientConThread extends Thread {
 
         PrintWriter outp = null;
         ObjectInputStream inp = null;
-        Object serverMsg = null;
 
         try {
             outp = new PrintWriter(s.getOutputStream(), true);
@@ -86,12 +86,11 @@ public class ClientConThread extends Thread {
 
                     //convo.append(message + "\n");
                     outp.println(message);
-                    serverMsg = inp.readObject();
+                    final Object serverMsg = inp.readObject();
 
                     // Determine how to respond to the message
                     if (!(serverMsg instanceof ConfirmMsg)) {
                         System.out.println(serverMsg);
-
 
                         latlng_ext = new LatLng(((Location)serverMsg).lat, ((Location)serverMsg).lon);
 
@@ -106,6 +105,12 @@ public class ClientConThread extends Thread {
                             }
                         });
 
+                    } else if (serverMsg instanceof BusStopUpdate){
+                        caller.runOnUiThread(new Runnable(){
+                            public void run(){
+                                caller.busStopLabel.setText(((BusStopUpdate)serverMsg).getBusStop());
+                            }
+                        });
                     }
                     //convo.append(serverMsg + "\n");
                 } catch (IOException e) {
