@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("myId", myId);
 
                     startActivity(intent);
-                    // TODO: Test if this gray screens on different machines
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Please select a starting and final stop with a bus route",

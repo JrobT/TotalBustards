@@ -44,6 +44,19 @@
         android:prompt="@string/stop_prompt"
         android:background="@color/Default" />
 
+    <Spinner
+        android:tooltipText="Final Bus Stop"
+        android:id="@+id/bus"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/stop"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:visibility="visible"
+        android:entries="@array/bus_arrays"
+        android:prompt="@string/bus_prompt"
+        android:background="@color/Default" />
+
     <CheckBox
         android:id="@+id/useLocation"
         android:layout_width="wrap_content"
@@ -62,7 +75,7 @@
         android:layout_height="200dp"
         android:layout_alignLeft="@+id/stop"
         android:layout_alignStart="@+id/stop"
-        android:layout_below="@+id/stop"
+        android:layout_below="@+id/bus"
         android:layout_marginTop="30dp"
         android:visibility="gone" />
 

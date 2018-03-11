@@ -5,15 +5,18 @@ import android.app.Activity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mycompany.app.BusStopUpdate;
 import com.mycompany.app.ConfirmMsg;
 import com.mycompany.app.LocXY;
+import com.mycompany.app.PathMsg;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Created by User on 10/03/2018.
@@ -105,10 +108,20 @@ public class ClientConThread extends Thread {
                             }
                         });
 
-                    } else if (serverMsg instanceof BusStopUpdate){
+                    } else if (serverMsg instanceof BusStopUpdate) {
                         caller.runOnUiThread(new Runnable(){
                             public void run(){
                                 caller.busStopLabel.setText(((BusStopUpdate)serverMsg).getBusStop());
+                            }
+                        });
+                    } else if (serverMsg instanceof PathMsg) {
+                        caller.runOnUiThread(new Runnable(){
+                            public void run(){
+                                for (int i=0; i<((PathMsg) serverMsg).getLocations().size(); i++) {
+                                    LatLng pos = new LatLng(((PathMsg) serverMsg).getLocations().get(i).lat,
+                                            (((PathMsg) serverMsg).getLocations().get(i)).lon);
+                                    mMap.addMarker(new MarkerOptions().position(pos));
+                                }
                             }
                         });
                     }
